@@ -10,11 +10,9 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 /**
  * Class which manages the songs and playlists and handles playback
- *
- * @author Fabian Bühler
- * @author Sandro Speth
- * @author Tobias Wältken
- * @version 1.0
+ * @author Daniel Capkan, Matrikelnummer: 3325960, st156303@stud.uni-stuttgart.de
+ * @author Mario Scheich, Matrikelnummer: 3232655 , st151491@stud.uni-stuttgart.de
+ * @author Florian Walcher, Matrikelnummer: 3320185, st156818@stud.uni-stuttgart.de
  */
 public class Player implements BasicPlayerListener {
 	
