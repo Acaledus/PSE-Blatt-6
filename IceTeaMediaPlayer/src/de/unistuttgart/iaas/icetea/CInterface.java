@@ -39,14 +39,10 @@ public class CInterface {
 					System.out.println("Gib die Liste der Lieder an:");
 					break;
 				case 3: 
-					System.out.println("Gib das zu spielende Lied an:" );
 					player.play(song);
 					break;
 				case 4: 
-					System.out.println("Gib die abzuspielende Playlist an:");
-					if (playlist != null) {
-						player.play(playlist);
-					}
+					player.play(playlist);
 					break;
 				case 5:
 					player.play();
