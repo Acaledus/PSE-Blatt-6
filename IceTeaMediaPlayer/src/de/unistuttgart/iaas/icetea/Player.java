@@ -167,7 +167,11 @@ public class Player implements BasicPlayerListener {
 	 */
 	public void resume() {
 		this.player.resume();
-		state = PlayerState.PLAYING;
+		if (state == PlayerState.PAUSED) {
+			state = PlayerState.PLAYING;
+		} else {
+			throw new IllegalStateException();
+		}
 	}
 
 	/**
