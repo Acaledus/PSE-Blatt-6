@@ -16,6 +16,12 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
  */
 public class Player implements BasicPlayerListener {
 	
+	private PlayerState state = PlayerState.NO_FILE;
+	
+	public PlayerState getState() {
+		return state;
+	}
+
 	/** is the player that handles low level playback */
 	private PlayerCore player;
 	
@@ -96,7 +102,8 @@ public class Player implements BasicPlayerListener {
 	public void play() {
 		if (this.currentSong != null) {
 			this.player.open(this.currentSong);
-			this.player.play();
+			this.player.play();		
+			state = PlayerState.PLAYING;
 		}
 	}
 	
@@ -111,6 +118,7 @@ public class Player implements BasicPlayerListener {
 		this.currentSong = song;
 		this.player.open(this.currentSong);
 		this.player.play();
+		state = PlayerState.PLAYING;
 	}
 	
 	/**
@@ -124,7 +132,8 @@ public class Player implements BasicPlayerListener {
 		if (this.currentPlaylist.hasNext()) {
 			this.currentSong = this.currentPlaylist.next();
 			this.player.open(this.currentSong);
-			this.player.play();
+			this.player.play();		
+			state = PlayerState.PLAYING;
 		}
 	}
 	
@@ -140,6 +149,7 @@ public class Player implements BasicPlayerListener {
 				this.currentSong = this.currentPlaylist.next();
 				this.player.open(this.currentSong);
 				this.player.play();
+				state = PlayerState.PLAYING;
 			}
 		}
 	}
@@ -149,6 +159,7 @@ public class Player implements BasicPlayerListener {
 	 */
 	public void pause() {
 		this.player.pause();
+		state = PlayerState.PAUSED;
 	}
 
 	/**
@@ -156,6 +167,7 @@ public class Player implements BasicPlayerListener {
 	 */
 	public void resume() {
 		this.player.resume();
+		state = PlayerState.PLAYING;
 	}
 
 	/**
@@ -163,6 +175,7 @@ public class Player implements BasicPlayerListener {
 	 */
 	public void stop() {
 		this.player.stop();
+		state = PlayerState.STOPPED;
 	}
 	
 	@Override
@@ -188,6 +201,7 @@ public class Player implements BasicPlayerListener {
 				this.currentSong = this.currentPlaylist.next();
 				this.player.open(currentSong);
 				this.player.play();
+				state = PlayerState.PLAYING;
 			}
 		}
 	}
