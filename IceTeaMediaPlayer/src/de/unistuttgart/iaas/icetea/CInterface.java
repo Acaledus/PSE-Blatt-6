@@ -1,5 +1,6 @@
 package de.unistuttgart.iaas.icetea;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -9,47 +10,54 @@ import java.util.Scanner;
  * @author Florian Walcher, Matrikelnummer: 3320185, st156818@stud.uni-stuttgart.de
  */
 public class CInterface {
-
 	public static void main(String[] args) throws IOException{
+		Player player = new Player();
+		Song song = null;
+		Playlist playlist = null;
 		System.out.println("Hauptmenü");
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("1.Lied hinzufügen(drücke hierfür die 1)\n2.Playlist hinzufügen(drücke hierfür die 2)\n-\n"
-				+ "3.Lied abspielen(drücke hierfür die 3)\n4.Playlist abspielen(drücke hierfür die 4)\n-\n"
-				+ "5.Play(drücke hierfür die 5)\n6.Skip(drücke hierfür die 6)\n7.Pause(drücke hierfür die 7)\n8.Stop(drücke hierfür die 8)\n-\n"
-				+ "0.Programm beenden(drücke hierfür die 9)");
-		
+		System.out.println("1. Lied hinzufügen\n2. Playlist hinzufügen\n-\n"
+				+ "3. Lied abspielen\n4. Playlist abspielen\n-\n"
+				+ "5. Play\n6. Skip\n7. Pause\n8. Stop\n-\n"
+				+ "0. Programm beenden");
 		int Auswahl = scanner.nextInt();
-		
-		if(Auswahl>0 && Auswahl<10){
+		if(Auswahl > 0 && Auswahl < 10){
 			if(Auswahl == 1){
-				System.out.println("gib den Name des Liedes an:");
-				Player.addSong(scanner.nextLine());
-				System.out.println("gib den Pfad des Liedes an:");
+				System.out.println("Gib den Name des Liedes an:");
+				String lied = scanner.next();
+				File datei = new File(lied);
+				song = new Song(lied, datei.getAbsolutePath());
+				player.addSong(song);
+				System.out.println("Gib den Pfad des Liedes an:");
 			}
 			if(Auswahl == 2){
-				System.out.println("gib den Name der Playlist an:");
-				Player.addPlaylist();				
-				System.out.println("gib die Liste der Lieder an:");
+				System.out.println("Gib den Namen der Playlist an:");
+				String playlistName = scanner.next();
+				playlist = new Playlist(playlistName);
+				player.addPlaylist(playlist);				
+				System.out.println("Gib die Liste der Lieder an:");
 			}
 			if(Auswahl == 3){ 
-				System.out.println("geben sie das zu spielende Lied an:" );
-				Player.play(Song);
+				System.out.println("Gib das zu spielende Lied an:" );
+				player.play(song);
 			}
 			if(Auswahl == 4){ 
-				System.out.println("geben sie die abzuspielende Playlist an");
-				Player.play(Playlist);
+				System.out.println("Gib die abzuspielende Playlist an");
+				if (playlist != null) {
+					player.play(playlist);
+				}
 			}
 			if(Auswahl == 5){ 
-				Player.play();
+				player.play();
 			}
 			if(Auswahl == 6){
-				Player.skip();
+				player.skip();
 			}
 			if(Auswahl == 7){
-				Player.pause();
+				player.pause();
 			}
 			if(Auswahl == 8){
-				Player.stop();
+				player.stop();
 			}
 			if(Auswahl == 9){
 				System.exit(0);
@@ -57,5 +65,6 @@ public class CInterface {
 				throw new IllegalArgumentException();
 			}
 		}
+		scanner.close();
 	}
 }
