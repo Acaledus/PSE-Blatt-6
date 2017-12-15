@@ -1,5 +1,6 @@
 package de.unistuttgart.iaas.icetea;
 
+import java.io.File;
 import java.util.Scanner;
 
 /**
@@ -24,12 +25,11 @@ public class CInterface {
 			switch (auswahl) {
 				case 1:
 					System.out.println("Gib den Namen des Liedes an:");
-					String liedName = scanner.next();
-					System.out.println("Gib den Pfad des Liedes an:");
-					String liedPfad = scanner.next();
-					song = new Song(liedName, liedPfad);
+					String lied = scanner.next();
+					File liedDatei = new File(lied);
+					song = new Song(lied, liedDatei.getAbsolutePath());
 					player.addSong(song);
-					System.out.println("Song " + song.getName() + " mit dem Pfad " + song.getPath() + "hinzugefügt.");
+					System.out.println("Song " + song.getName() + " mit dem Pfad " + song.getPath() + " hinzugefügt.");
 					break;
 				case 2:
 					System.out.println("Gib den Namen der Playlist an:");
@@ -64,7 +64,7 @@ public class CInterface {
 					run = false;
 					break;
 				default:
-					throw new IllegalArgumentException();
+					System.out.println("Ungültige Eingabe.");
 			}
 		}
 		scanner.close();

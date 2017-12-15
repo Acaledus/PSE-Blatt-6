@@ -99,11 +99,13 @@ public class Player implements BasicPlayerListener {
 	 * If a playlist was played before this method will continue
 	 * the playlist at the position at which playback was stopped
 	 */
-	public void play() {
-		if (this.currentSong != null) {
+	public void play() throws IllegalStateException {
+		if (this.currentSong != null && state != PlayerState.PLAYING && state != PlayerState.NO_FILE) {
 			this.player.open(this.currentSong);
-			this.player.play();		
+			this.player.play();	
 			state = PlayerState.PLAYING;
+		} else {
+			throw new IllegalStateException();
 		}
 	}
 	
@@ -113,12 +115,16 @@ public class Player implements BasicPlayerListener {
 	 * @param song
 	 *            is a song that should be played
 	 */
-	public void play(Song song) {
-		this.currentPlaylist = null;
-		this.currentSong = song;
-		this.player.open(this.currentSong);
-		this.player.play();
-		state = PlayerState.PLAYING;
+	public void play(Song song) throws IllegalStateException {
+		if (this.currentSong != null && state != PlayerState.PLAYING && state != PlayerState.NO_FILE) {
+			this.currentPlaylist = null;
+			this.currentSong = song;
+			this.player.open(this.currentSong);
+			this.player.play();
+			state = PlayerState.PLAYING;
+		} else {
+			throw new IllegalStateException();
+		}
 	}
 	
 	/**
@@ -127,13 +133,15 @@ public class Player implements BasicPlayerListener {
 	 * @param list
 	 *            is a playlist that should be played
 	 */
-	public void play(Playlist playlist) {
+	public void play(Playlist playlist) throws IllegalStateException {
 		this.currentPlaylist = playlist.getSongs().iterator();
-		if (this.currentPlaylist.hasNext()) {
+		if (this.currentPlaylist.hasNext() && state != PlayerState.PLAYING && state != PlayerState.NO_FILE) {
 			this.currentSong = this.currentPlaylist.next();
 			this.player.open(this.currentSong);
 			this.player.play();		
 			state = PlayerState.PLAYING;
+		} else {
+			throw new IllegalStateException();
 		}
 	}
 	
@@ -145,6 +153,7 @@ public class Player implements BasicPlayerListener {
 	public void skip() {
 		if (this.currentPlaylist != null) {
 			this.player.stop();
+			state = PlayerState.STOPPED;
 			if (this.currentPlaylist.hasNext()) {
 				this.currentSong = this.currentPlaylist.next();
 				this.player.open(this.currentSong);
@@ -157,9 +166,13 @@ public class Player implements BasicPlayerListener {
 	/**
 	 * pauses playback
 	 */
-	public void pause() {
-		this.player.pause();
-		state = PlayerState.PAUSED;
+	public void pause() throws IllegalStateException {
+		if (state == PlayerState.PLAYING) {
+			this.player.pause();
+			state = PlayerState.PAUSED;
+		} else {
+			throw new IllegalStateException();
+		}
 	}
 
 	/**
@@ -177,9 +190,13 @@ public class Player implements BasicPlayerListener {
 	/**
 	 * stops playback
 	 */
-	public void stop() {
-		this.player.stop();
-		state = PlayerState.STOPPED;
+	public void stop() throws IllegalStateException {
+		if (state == PlayerState.PLAYING) {
+			this.player.stop();
+			state = PlayerState.STOPPED;
+		} else {
+			throw new IllegalStateException();
+		}
 	}
 	
 	@Override
@@ -206,6 +223,8 @@ public class Player implements BasicPlayerListener {
 				this.player.open(currentSong);
 				this.player.play();
 				state = PlayerState.PLAYING;
+			} else {
+				state = PlayerState.PAUSED;
 			}
 		}
 	}
